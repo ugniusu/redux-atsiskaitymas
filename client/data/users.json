@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstname": "Ugnius",
+      "email": "ugnius@example.com",
+      "password": "belekas",
+      "role": "paprastas"
+    },
+    {
+      "id": 2,
+      "firstname": "John",
+      "email": "John@example.com",
+      "password": "john",
+      "role": "paprastas"
+    },
+    {
+      "id": 3,
+      "firstname": "David",
+      "email": "david@example.com",
+      "password": "david",
+      "role": "paprastas"
+    },
+    {
+      "id": 4,
+      "firstname": "Mike",
+      "email": "mike@example.com",
+      "password": "mike",
+      "role": "admin"
+    }
+  ]
+}

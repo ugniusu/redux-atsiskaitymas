@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllUsers } from "../features/userSlice";
+import { deleteUser, fetchAllUsers } from "../features/userSlice";
 import axios from "axios";
+
+const BASE_URL = "http://localhost:5000/api/users";
 
 function AdminDashboard() {
   const dispatch = useDispatch();
   const isAdmin = useSelector((state) => state.auth.isAdmin);
   const users = useSelector((state) => state.users.allUsers);
 
-  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
   // useEffect(() => {
@@ -18,20 +19,41 @@ function AdminDashboard() {
   // }, [dispatch, isAdmin]);
 
   useEffect(function () {
-    async function fetchCities() {
+    async function fetchUsers() {
       try {
-        setIsLoading(true);
-        const res = await fetch("http://localhost:5000/api/users/users");
+        const res = await fetch(`${BASE_URL}/users`);
         const data = await res.json();
         setData(data);
+        console.log(data);
       } catch {
         alert("There was an error of loading data...");
       } finally {
-        setIsLoading(false);
       }
     }
-    fetchCities();
+    fetchUsers();
   }, []);
+
+  const handleDeleteUser = (id) => {
+    dispatch(deleteUser(id));
+  };
+
+  // FAKE API fetch
+  // useEffect(function () {
+  //   async function fetchCities() {
+  //     try {
+  //       setIsLoading(true);
+  //       const res = await fetch(`http://localhost:7000/users`);
+  //       const data = await res.json();
+  //       setData(data);
+  //       console.log(data);
+  //     } catch {
+  //       alert("There was an error of loading data...");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   }
+  //   fetchCities();
+  // }, []);
 
   return (
     <div>
@@ -42,17 +64,15 @@ function AdminDashboard() {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {data.map((user) => (
             <tr key={user._id}>
-              <td>{user._id}</td>
               <td>{user.firstname}</td>
               <td>{user.email}</td>
               <td>
-                <button>Delete</button>
+                <button onClick={handleDeleteUser}>Delete</button>
               </td>
             </tr>
           ))}

@@ -28,6 +28,27 @@ export const fetchAllUsers = createAsyncThunk(
   }
 );
 
+export const deleteUser = createAsyncThunk(
+  "users/deleteUser",
+  async (id, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+
+    try {
+      await axios.delete(`${BASE_URL}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState,
@@ -42,6 +63,19 @@ const userSlice = createSlice({
         state.allUsers = action.payload;
       })
       .addCase(fetchAllUsers.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.payload;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.allUsers = state.allUsers.filter(
+          (user) => user.id !== action.payload
+        );
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
         state.status = "idle";
         state.error = action.payload;
       });

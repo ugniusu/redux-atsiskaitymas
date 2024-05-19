@@ -81,8 +81,45 @@ const getAllUsers = asyncHandler(async (req, res) => {
   res.status(200).json(users);
 });
 
+// @method DELETE
+// @route GET /api/users/:id
+// @access PRIVATE
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(404).send("User not found");
+    return;
+  }
+  const theOne = await User.deleteOne({ _id: req.params.id });
+  res.status(200).json(theOne);
+});
+
+// const deleteUser = asyncHandler(async (req, res) => {
+//   const user = await User.findById(req.params.id);
+
+//   if (!user) {
+//     res.status(400);
+//     throw new Error("User not found");
+//   }
+
+//   if (!req.user) {
+//     res.status(401);
+//     throw new Error("User not authenticated");
+//   }
+
+//   if (user._id.toString() !== req.user.id) {
+//     res.status(401);
+//     throw new Error("User not authorized");
+//   }
+
+//   await User.findByIdAndDelete(req.params.id);
+
+//   res.status(200).json({ id: req.params.id });
+// });
+
 module.exports = {
   registerUser,
   loginUser,
   getAllUsers,
+  deleteUser,
 };
