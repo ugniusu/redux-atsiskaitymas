@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.container h1 {
+  color: #fff;
+}
+
+input {
+  height: 24px;
+  border-radius: 5px;
+  border: none;
+}
+
+.btnAdd {
+  margin-left: 12px;
+  margin-top: 64px;
+  height: 30px;
+  background-color: #4fa4ff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.goalsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+  justify-content: start;
+}
